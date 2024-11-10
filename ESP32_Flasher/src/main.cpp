@@ -20,11 +20,9 @@ void setup()
 {
   Serial.begin(115200);
 
-  pinMode(LED, OUTPUT);
   pinMode(ZBS_RXD, INPUT);
-  digitalWrite(LED, LOW);
 
-  neopixelWrite(RGB_BUILTIN,0,10,5); // Green?
+  change_led();
 
   while (Serial.available()) // Flushing UART
     Serial.read();
@@ -97,7 +95,7 @@ void UART_handler()
           Serial1.printf(" %02X", UART_rx_buffer[i]);
         }
         Serial1.printf("\r\n");*/
-        digitalWrite(LED, !digitalRead(LED));
+        change_led();
         handle_uart_cmd(UART_CMD, UART_rx_buffer, expected_len);
         UART_rx_state = 0;
       }
@@ -412,4 +410,17 @@ void send_uart_answer(uint8_t answer_cmd, uint8_t *ans_buff, uint8_t len)
       Serial1.printf(" %02X", answer_buffer[i]);
     }
     Serial1.printf("\r\n");*/
+}
+
+bool ledState = false;
+
+void change_led() {
+  int r = 255 * 0.05, g = 50 * 0.05, b = 180 * 0.05;
+  
+  if (ledState) {
+    neopixelWrite(RGB_BUILTIN, 0, 0, 0);
+  } else {
+    neopixelWrite(RGB_BUILTIN, r, g, b);
+  }
+  ledState = !ledState;
 }
