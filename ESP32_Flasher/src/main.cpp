@@ -415,12 +415,10 @@ void send_uart_answer(uint8_t answer_cmd, uint8_t *ans_buff, uint8_t len)
 bool ledState = false;
 
 void change_led() {
-  int r = 255 * 0.05, g = 50 * 0.05, b = 180 * 0.05;
-  
   if (ledState) {
     neopixelWrite(RGB_BUILTIN, 0, 0, 0);
   } else {
-    neopixelWrite(RGB_BUILTIN, r, g, b);
+    neopixelWrite(RGB_BUILTIN, 255 * 0.05, 50 * 0.05, 180 * 0.05);
   }
   ledState = !ledState;
 }
