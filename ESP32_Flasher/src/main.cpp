@@ -6,6 +6,11 @@
 #include "zbs_interface.h"
 #include "main.h"
 
+#ifdef RGB_BUILTIN
+#undef RGB_BUILTIN
+#endif
+#define RGB_BUILTIN 21
+
 uint32_t FLASHER_VERSION = 0x00000020;
 
 uint32_t spi_speed = 8000000; // Speed for hardware spi, default 8MHz can be set via the PC tool
@@ -18,6 +23,8 @@ void setup()
   pinMode(LED, OUTPUT);
   pinMode(ZBS_RXD, INPUT);
   digitalWrite(LED, LOW);
+
+  neopixelWrite(RGB_BUILTIN,0,10,5); // Green?
 
   while (Serial.available()) // Flushing UART
     Serial.read();
